@@ -19,8 +19,8 @@ app.use(cors());
 app.use(express.json());
 
 
-app.use("/users", userRouter)
-app.use("/group", chatGroupRouter)
+app.use("/users", userRouter);
+app.use("/group", chatGroupRouter);
 
 app.get(process.env.SECRET_PATH, (req, res)=>{
     res.send(process.env.SECRET_MESSAGE);
@@ -28,8 +28,8 @@ app.get(process.env.SECRET_PATH, (req, res)=>{
 
 mongoose.set('strictQuery', true);
 mongoose.connect(process.env.MONGO_CONNECTION_URL).then(()=>  app.listen(PORT, ()=>{
-    console.log(`Server running on port ${PORT}`)
+    console.log(`Server running on port ${PORT}`);
 })).catch((err)=>{
-    console.error(`Error while starting and connecting DB ${err}`)
+    console.error(`Error while starting and connecting DB ${err}`);
 });
 
