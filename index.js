@@ -20,7 +20,7 @@ app.use(express.json());
 
 
 app.use("/users", userRouter);
-app.use("/group", chatGroupRouter);
+app.use("/chat", chatGroupRouter);
 
 app.get(process.env.SECRET_PATH, (req, res)=>{
     res.send(process.env.SECRET_MESSAGE);

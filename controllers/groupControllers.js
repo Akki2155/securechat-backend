@@ -7,6 +7,15 @@ const UserModel=require('../models/users.js');
 const getGroupAllMessages=async(req, res)=>{
     const {groupId, userId, }=req.body;
 
+    console.log(groupId, userId);
+
+
+    return res.status(200).json({
+        groupId,
+        userId
+    })
+    
+
 
 }
 
