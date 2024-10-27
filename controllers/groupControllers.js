@@ -7,8 +7,6 @@ const UserModel=require('../models/users.js');
 const getGroupAllMessages=async(req, res)=>{
     const {groupId, userId, }=req.body;
 
-    console.log(groupId, userId);
-
 
     return res.status(200).json({
         groupId,
@@ -35,33 +33,6 @@ const getUserAllGroups=async(req, res)=>{
     const {userId}=req.userId;
 }
 
-const createGroup=async(req,res)=>{
-    const {groupName, groupKey}=req.body;
-    const userid= req.userid;
-
-    console.log(userid);
-    
- 
-    const result = await GroupModal.create({
-        groupName,
-        groupDecodekey: groupKey,
-        owner:userid,
-        members:[userid]
-    })
-    console.log(result)
-
-    if(result.id){
-        const user= await UserModel.findOne({id: userid})
-
-        user.groupMembered.push(result.id);
-
-        const updatedUser= await user.save();
-        console.log(updatedUser)
-
-    }
-
-    
-}
 
 
 
@@ -71,5 +42,4 @@ module.exports={
     decryptGroupAllMessages,
     decryptGroupMessage,
     getUserAllGroups,
-    createGroup
 }

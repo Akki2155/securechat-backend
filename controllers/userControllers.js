@@ -2,7 +2,7 @@ const UserModel=require('../models/users.js');
 const BlackListedTokenSchema= require("../models/blackListedToken.js");
 const bcrypt=require('bcrypt');
 const jwt=require("jsonwebtoken");
-
+const { getUserDetails } = require('../middleware/Validations/userValidations.js');
 
 
 const createUser=async(req, res)=>{
@@ -24,12 +24,12 @@ const createUser=async(req, res)=>{
         })
     
         if(!result){
-            res.status(400).json({
+            return res.status(400).json({
                 res:"Failed",
                 message:"User not signed up"
             })
         }else{
-                res.status(200).json({
+            return res.status(200).json({
                     res:"Success",
                     message:"User Signed up Successfully"
                 })
@@ -46,7 +46,7 @@ const createUser=async(req, res)=>{
 const deleteUser=async(req,res)=>{
     const {emailId}=req.body;
 
-    const existingUser = await UserModel.findOne({emailId});
+    const existingUser = await getUserDetails(emailId);
 
     if(!existingUser){
         return res.status(400).json({
@@ -75,7 +75,7 @@ const deleteUser=async(req,res)=>{
 const userlogin=async (req, res)=>{
     const {emailId, password, isRemeberMeEnabled}=req.body;
 
-    const existingUser = await UserModel.findOne({emailId});
+    const existingUser = await getUserDetails(emailId);
 
     if(!existingUser){
         return res.status(400).json({
