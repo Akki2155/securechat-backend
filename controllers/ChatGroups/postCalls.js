@@ -3,10 +3,9 @@ const { getUserDetails } = require("../../middleware/Validations/userValidations
 const GroupModal=require("../../models/group.js")
 
 const createGroup=async(req,res)=>{
-    const {groupName, groupKey, userId}=req.body; 
+    const {groupName, userId}=req.body;
     const result = await GroupModal.create({
         groupName,
-        groupDecodekey: groupKey,
         owner:userId,
         members:[userId]
     })
@@ -71,6 +70,12 @@ const addMemberGroup=async(req,res)=>{
     
 
 }
+
+
+const sendMessage=async(req, res)=>{
+
+}
+
 
 module.exports={
     createGroup,

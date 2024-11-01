@@ -1,5 +1,5 @@
 const express = require('express');
-const { auth, isTokenBlacklisted, onlyOwner } = require('../middleware/auth');
+const { auth, isTokenBlacklisted, onlyOwner, onlyMember } = require('../middleware/auth');
 const { getGroupAllMessages } = require('../controllers/groupControllers');
 const { createGroup, addMemberGroup } = require('../controllers/ChatGroups/postCalls');
 
@@ -13,6 +13,7 @@ router.get("/default", (req, res)=>{
 
 router.post("/createGroup", [auth, isTokenBlacklisted], createGroup);
 router.post("/addMember", [auth, isTokenBlacklisted, onlyOwner], addMemberGroup)
+router.post("/sendMessage/:id", [auth, isTokenBlacklisted, onlyMember], postMessage)
 
 // Get Calls
 
