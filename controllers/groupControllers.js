@@ -1,11 +1,24 @@
 const GroupModal=require("../models/group.js")
 const MessageModal= require("../models/message.js")
 const UserModel=require('../models/users.js');
+const socket= require("../helpers/socket.js");
 
 
+let messages=[{
+    username:'h1T_HSaYeyQgaZ3cAAAD',
+    message:'Check message 1'
+},
+]
 
 const getGroupAllMessages=async(req, res)=>{
     const {groupId, userId, }=req.body;
+
+
+    return res.status(200).json({
+        groupId,
+        userId
+    })
+    
 
 
 }
@@ -26,32 +39,21 @@ const getUserAllGroups=async(req, res)=>{
     const {userId}=req.userId;
 }
 
-const createGroup=async(req,res)=>{
-    const {groupName, groupKey}=req.body;
-    const userid= req.userid;
 
-    console.log(userid);
-    
- 
-    const result = await GroupModal.create({
-        groupName,
-        groupDecodekey: groupKey,
-        owner:userid,
-        members:[userid]
+const getDummyMessages=async(req, res)=>{
+    res.status(200).json({
+        messages
     })
-    console.log(result)
+}
 
-    if(result.id){
-        const user= await UserModel.findOne({id: userid})
+const sendDummyMessage=async(req, res)=>{
+   messages.push(req.body);
+   const io = socket.getIo();
+   io.emit('message', req.body);
 
-        user.groupMembered.push(result.id);
-
-        const updatedUser= await user.save();
-        console.log(updatedUser)
-
-    }
-
-    
+   res.status(201).json({
+    messages
+   })
 }
 
 
@@ -62,5 +64,6 @@ module.exports={
     decryptGroupAllMessages,
     decryptGroupMessage,
     getUserAllGroups,
-    createGroup
+    getDummyMessages,
+    sendDummyMessage
 }
