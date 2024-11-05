@@ -1,6 +1,8 @@
+const { encryptMessage } = require("../../helpers/messageTransform.js");
 const { getGroupDetails, isMemberAdded, isGroupOwner } = require("../../middleware/Validations/groupValidations.js");
 const { getUserDetails } = require("../../middleware/Validations/userValidations.js");
-const GroupModal=require("../../models/group.js")
+const GroupModal=require("../../models/group.js");
+const MessageModal=require("../../models/message.js");
 
 const createGroup=async(req,res)=>{
     const {groupName, userId}=req.body;
@@ -73,11 +75,28 @@ const addMemberGroup=async(req,res)=>{
 
 
 const sendMessage=async(req, res)=>{
+    const {message, groupId, encryptPassword}=req.body;
 
+    const requestedGroup=await getGroupDetails(groupId)
+
+    if(!requestedGroup){
+        return res.status(400).json({
+            res:"Failed",
+            message:"Requested Group Not found"
+        })     
+    }
+
+    const encryptedMessage= encryptMessage(message, encryptPassword);
+    const messageRes= await MessageModal.create({
+        
+    })
+
+    
 }
 
 
 module.exports={
     createGroup,
-    addMemberGroup
+    addMemberGroup,
+    sendMessage
 }

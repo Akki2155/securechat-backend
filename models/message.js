@@ -7,7 +7,10 @@ const messageSchema= mongoose.Schema({
         ref:'User',
         required:true
     },
-    edited: Boolean,
+    edited: {
+        type: Boolean,
+        default: false
+    },
     editedHistory:[String],
     sentAt:{
         type: String,

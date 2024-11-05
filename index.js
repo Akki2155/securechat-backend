@@ -1,14 +1,15 @@
 const express = require('express');
 const http= require('http');
-const socketio= require('socket.io');
 const cors=require('cors');
 const mongoose=require('mongoose');
 require('dotenv').config();
 
+const socket= require("./helpers/socket.js");
+
 const PORT=process.env.PORT;
 const app=express();
 const server = http.createServer(app);
-const io=socketio(server);
+const io=socket.init(server);
 
 
 const userRouter=require('./routes/users.js')
@@ -26,8 +27,17 @@ app.get(process.env.SECRET_PATH, (req, res)=>{
     res.send(process.env.SECRET_MESSAGE);
 })
 
+io.on('connection', (socket)=>{
+    console.log('New User is connected', socket.id);
+
+    socket.on("disconnect", ()=>{
+        console.log("User Disconnected", socket.id);
+        
+    })
+});
+
 mongoose.set('strictQuery', true);
-mongoose.connect(process.env.MONGO_CONNECTION_URL).then(()=>  app.listen(PORT, ()=>{
+mongoose.connect(process.env.MONGO_CONNECTION_URL).then(()=>  server.listen(PORT, ()=>{
     console.log(`Server running on port ${PORT}`);
 })).catch((err)=>{
     console.error(`Error while starting and connecting DB ${err}`);

@@ -1,7 +1,8 @@
 const express = require('express');
 const { auth, isTokenBlacklisted, onlyOwner, onlyMember } = require('../middleware/auth');
-const { getGroupAllMessages } = require('../controllers/groupControllers');
-const { createGroup, addMemberGroup } = require('../controllers/ChatGroups/postCalls');
+const { getGroupAllMessages, getDummyMessages, sendDummyMessage } = require('../controllers/groupControllers');
+const { createGroup, addMemberGroup, sendMessage } = require('../controllers/ChatGroups/postCalls');
+const { isMemberAdded } = require('../middleware/Validations/groupValidations');
 
 const router=express.Router();
 
@@ -12,8 +13,9 @@ router.get("/default", (req, res)=>{
 //Post Calls
 
 router.post("/createGroup", [auth, isTokenBlacklisted], createGroup);
-router.post("/addMember", [auth, isTokenBlacklisted, onlyOwner], addMemberGroup)
-router.post("/sendMessage/:id", [auth, isTokenBlacklisted, onlyMember], postMessage)
+router.post("/addMember", [auth, isTokenBlacklisted, onlyOwner], addMemberGroup);
+router.post("/sendMessage",[auth, isTokenBlacklisted, isMemberAdded] ,sendMessage);
+
 
 // Get Calls
 
