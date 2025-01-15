@@ -16,11 +16,11 @@ const getGroupDetails=async(groupName)=>{
 const isMemberAdded=async(groupName, userId)=>{  
     const requestedGroup=await getGroupDetails(groupName);
     const requestedUser=await getUserDetails(userId);
-   
+    
     if(requestedGroup && requestedUser){
         return requestedGroup.members.includes(requestedUser.id);
     }else{ 
-        return false
+        return false;
     }
 }
 
@@ -29,7 +29,7 @@ const isGroupOwner=async(groupName, userId)=>{
     const requestedUser=await getUserDetails(userId);
 
     return requestedGroup.owner == requestedUser.id;
-   
+    
 }
 
 

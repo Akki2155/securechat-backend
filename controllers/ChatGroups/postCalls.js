@@ -86,7 +86,9 @@ const sendMessage=async(req, res)=>{
         })     
     }
 
-    const encryptedMessage= encryptMessage(message, encryptPassword);
+    //Encryption Fucntionality Leave
+    // const encryptedMessage= encryptMessage(message, encryptPassword);
+
     const messageRes= await MessageModal.create({
         
     })

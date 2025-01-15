@@ -9,7 +9,7 @@ const createUser=async(req, res)=>{
     try {
         
         const {emailId, username, password, phonenumber}=req.body;
-    
+
         const hashedPassword=await bcrypt.hash(password, 12);
     
         const result= await UserModel.create({
@@ -34,7 +34,7 @@ const createUser=async(req, res)=>{
                     message:"User Signed up Successfully"
                 })
         }
-    } catch (error) {
+    } catch (error) {        
         res.status(500).json({
             res:"failed",
             message:error
@@ -76,7 +76,6 @@ const userlogin=async (req, res)=>{
     const {emailId, password, isRemeberMeEnabled}=req.body;
 
     const existingUser = await getUserDetails(emailId);
-
     if(!existingUser){
         return res.status(400).json({
             res:"Failed",
@@ -101,7 +100,17 @@ const userlogin=async (req, res)=>{
 
     return res.status(200).json({
         res:"Success",
-        token,
+        user:{
+            token,
+            details:{
+                firstName:existingUser.username.first,
+                middleName:existingUser.username.middle,
+                lastName:existingUser.username.last,
+                memberedGroup:existingUser.groupMembered,
+                phoneNo:existingUser.phonenumber,
+                emailId:existingUser.emailId
+            }
+        },
         message:"User Logged In Succesfully!"
     })
 }
@@ -113,12 +122,14 @@ const userLogout=async(req,res)=>{
         const dbRes=await BlackListedTokenSchema.create({
             blackListedToken: token
         })
-        if(!dbRes){
+        if(dbRes){
             return res.status(200).json({
-                result:dbRes
+                res:"Success",
+                dbRes
             })
         }else{
             return res.status(500).json({
+                res:"Failed",
                 dbRes
             })
         }
@@ -126,12 +137,11 @@ const userLogout=async(req,res)=>{
     } catch (error) {
 
         // Chnage error message , for logout as token is already added to db
+        console.log(error)
         return res.status(500).json({
             error
         })
     }
-    
-
 }
 
 module.exports={

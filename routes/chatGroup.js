@@ -18,8 +18,7 @@ router.post("/sendMessage",[auth, isTokenBlacklisted, isMemberAdded] ,sendMessag
 
 
 // Get Calls
-
-router.get("/allMessages", [auth, isTokenBlacklisted], getGroupAllMessages)
+router.get("/allMessages", [auth, isTokenBlacklisted], getGroupAllMessages);
 
 
 module.exports=router

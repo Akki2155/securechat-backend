@@ -40,30 +40,11 @@ const getUserAllGroups=async(req, res)=>{
 }
 
 
-const getDummyMessages=async(req, res)=>{
-    res.status(200).json({
-        messages
-    })
-}
-
-const sendDummyMessage=async(req, res)=>{
-   messages.push(req.body);
-   const io = socket.getIo();
-   io.emit('message', req.body);
-
-   res.status(201).json({
-    messages
-   })
-}
-
-
 
 
 module.exports={
     getGroupAllMessages,
     decryptGroupAllMessages,
     decryptGroupMessage,
-    getUserAllGroups,
-    getDummyMessages,
-    sendDummyMessage
+    getUserAllGroups
 }

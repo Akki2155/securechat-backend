@@ -10,7 +10,7 @@ router.get("/default", (req, res)=>{
 })
 
 router.post("/createuser", createUser);
-router.get("/login", userlogin);
+router.post("/login", userlogin);
 router.delete("/deleteuser", deleteUser);
 router.post("/logout", userLogout);
 
